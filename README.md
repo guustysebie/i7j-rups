@@ -67,3 +67,4 @@ Make sure to define your JAVA_HOME pointing to your jdk installation folder. Or 
 
 Some package lists may be unavailable (404 error). This will not cause the build to fail so can be ignored.
 
+##### ContextMenu settings 
