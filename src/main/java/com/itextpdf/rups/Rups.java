@@ -45,6 +45,8 @@ package com.itextpdf.rups;
 import com.itextpdf.kernel.actions.data.ITextCoreProductData;
 import com.itextpdf.rups.controller.IRupsController;
 import com.itextpdf.rups.controller.RupsController;
+import com.itextpdf.rups.io.cli.RupsCliArguments;
+import com.itextpdf.rups.io.network.CommandServer;
 import com.itextpdf.rups.model.LoggerHelper;
 import com.itextpdf.rups.view.Language;
 import com.itextpdf.rups.view.RupsDropTarget;
@@ -66,16 +68,33 @@ public class Rups {
     /**
      * Initializes the main components of the Rups application.
      *
-     * @param f a file that should be opened on launch
+     * @param cliArguments the cli arguments
      */
-    public static void startNewApplication(final File f) {
+    public static void startNewApplicationWithCommandLineArguments(RupsCliArguments cliArguments) {
+        boolean shouldLaunchGui = executeCli(cliArguments);
+        if (!shouldLaunchGui) {
+            return;
+        }
         SwingUtilities.invokeLater(() -> {
             setLookandFeel();
             final IRupsController rupsController = initApplication(new JFrame());
-            if (f != null) {
-                loadDocumentFromFile(rupsController, f);
-            }
+            cliArguments.getPdfFiles().forEach(pdfFile -> loadDocumentFromFile(rupsController, new File(pdfFile)));
         });
+    }
+
+    public static boolean executeCli(RupsCliArguments cliArguments) {
+        if (cliArguments.shouldPrintHelp()) {
+            cliArguments.printHelp();
+            return false;
+        } else if (cliArguments.shouldPrintVersion()) {
+            cliArguments.printVersion();
+            return false;
+        }
+        if (cliArguments.attachToRunningInstance() && CommandServer.isThereAlreadyAnInstanceRunning()) {
+            CommandServer.sendCommandToRunningInstance(cliArguments);
+            return false;
+        }
+        return true;
     }
 
     static void loadDocumentFromFile(IRupsController rupsController, File f) {

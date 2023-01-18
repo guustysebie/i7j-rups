@@ -93,6 +93,8 @@ public class RupsMenuBar extends JMenuBar implements Observer {
      */
     private final PreferencesWindow preferencesWindow;
 
+    private final CommandServerWindow commandServerWindow;
+
     /**
      * Creates a JMenuBar.
      */
@@ -100,7 +102,7 @@ public class RupsMenuBar extends JMenuBar implements Observer {
         items = new HashMap<>();
 
         preferencesWindow = new PreferencesWindow();
-
+        commandServerWindow = new CommandServerWindow(controller);
         fileOpenAction = new FileOpenAction(controller, PdfFilter.INSTANCE, controller.getMasterComponent());
         fileCloseAction = new FileCloseAction(controller);
         openInViewerAction = new OpenInViewerAction(controller);
@@ -129,6 +131,10 @@ public class RupsMenuBar extends JMenuBar implements Observer {
                     preferencesWindow.show(controller.getMasterComponent());
                 }
         );
+
+        addItem(edit, "Command server", e -> {
+            commandServerWindow.show(controller.getMasterComponent());
+        });
         add(edit);
 
         add(Box.createGlue());

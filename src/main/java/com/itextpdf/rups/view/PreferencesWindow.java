@@ -45,10 +45,7 @@ package com.itextpdf.rups.view;
 import com.itextpdf.rups.RupsConfiguration;
 import com.itextpdf.rups.view.icons.FrameIconUtil;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -85,6 +82,7 @@ public class PreferencesWindow {
     private JTextField pathField;
     private JLabel restartLabel;
     private JComboBox<String> localeBox;
+    private CommandServerSettingsPage commandServerSettingsPage;
 
     public PreferencesWindow() {
         initializeJDialog();
@@ -193,6 +191,8 @@ public class PreferencesWindow {
         this.visualPanel.add(localeLabel, this.left);
         this.visualPanel.add(this.localeBox, this.right);
         this.visualPanel.add(this.restartLabel, this.right);
+
+        this.commandServerSettingsPage = new CommandServerSettingsPage();
     }
 
     private void createTabbedPane() {
@@ -200,7 +200,7 @@ public class PreferencesWindow {
 
         tabbedPane.add(Language.PREFERENCES_RUPS_SETTINGS.getString(), this.generalSettingsScrollPane);
         tabbedPane.add(Language.PREFERENCES_VISUAL_SETTINGS.getString(), this.visualPanel);
-
+        tabbedPane.add("Command server", this.commandServerSettingsPage);
         this.jDialog.add(tabbedPane, BorderLayout.CENTER);
     }
 
@@ -255,6 +255,7 @@ public class PreferencesWindow {
         this.openDuplicateFiles.setSelected(RupsConfiguration.INSTANCE.canOpenDuplicateFiles());
         this.localeBox.setSelectedItem(RupsConfiguration.INSTANCE.getUserLocale().toLanguageTag());
         this.restartLabel.setVisible(false);
+        this.commandServerSettingsPage.reset();
     }
 
     public void show(Component component) {

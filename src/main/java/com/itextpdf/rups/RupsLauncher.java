@@ -42,8 +42,9 @@
  */
 package com.itextpdf.rups;
 
+import com.itextpdf.rups.io.cli.RupsCliArguments;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
  * iText RUPS is a tool that allows you to inspect the internal structure
@@ -57,13 +58,7 @@ public class RupsLauncher {
      * @param args no arguments needed
      */
     public static void main(String[] args) {
-        final File f;
-        if (args.length > 0) {
-            String pathToFile = args[0];
-            f = new File(pathToFile);
-        } else {
-            f = null;
-        }
-        Rups.startNewApplication(f);
+        Rups.startNewApplicationWithCommandLineArguments(new RupsCliArguments(args));
     }
 }
+

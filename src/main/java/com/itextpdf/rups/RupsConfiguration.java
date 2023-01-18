@@ -80,6 +80,7 @@ public enum RupsConfiguration {
     private static final String HOME_FOLDER_KEY = "user.home";
     private static final String LOCALE_KEY = "user.locale";
     private static final String LOOK_AND_FEEL_KEY = "ui.lookandfeel";
+    private static final String COMMAND_ENABLED_ON_START_UP = "command.enabledOnStartUp";
 
     private final Preferences systemPreferences;
     private final Properties defaultProperties;
@@ -112,6 +113,15 @@ public enum RupsConfiguration {
     public boolean canOpenDuplicateFiles() {
         final String value = getValueFromSystemPreferences(DUPLICATE_OPEN_FILES_KEY);
         return Boolean.parseBoolean(value);
+    }
+
+    public boolean getCommandServerEnabled() {
+        final String value = getValueFromSystemPreferences(COMMAND_ENABLED_ON_START_UP);
+        return Boolean.parseBoolean(value);
+    }
+
+    public void setCommandServerEnabled(boolean isCommandServerEnabled) {
+        this.temporaryProperties.setProperty(COMMAND_ENABLED_ON_START_UP, String.valueOf(isCommandServerEnabled));
     }
 
     /**
@@ -233,6 +243,7 @@ public enum RupsConfiguration {
 
         this.temporaryProperties.setProperty(LOCALE_KEY, locale.toLanguageTag());
     }
+
 
     /**
      * Saves any unsaved changes. To cancel changes, see {@link RupsConfiguration#cancelTemporaryChanges()}.
